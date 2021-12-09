@@ -29,10 +29,10 @@ const localizer = dateFnsLocalizer({
 
 
 function Body() {
-    const [ newEvent, setNewEvent ] = useState({ title: "", start: "", end: ""})
+    const [ newEvent, setNewEvent ] = useState({ id: "", title: "", start: "", end: ""})
     /*const [ allEvents, setAllEvents ] = useState(events)*/
     const [openModal, setOpenModal] = useState(false)
-    /*const [currentEvent, setCurrentEvent] = useState("")*/
+    const [currentEvent, setCurrentEvent] = useState({})
 
     const [ allEvents, setAllEvents ] = useState(() => {
 
@@ -49,8 +49,7 @@ function Body() {
         localStorage.setItem("events", JSON.stringify(allEvents))
     }, [allEvents])
 
-    ///to edit the event
-    /*
+    
     function handleEditInputChange(e) {
         setCurrentEvent({...currentEvent, title: e.target.value})
     }
@@ -62,15 +61,16 @@ function Body() {
 
     function handleEditFormSubmit(e) {
         e.preventDefault()
-        handleUpdateEvent(currentEvent.title, currentEvent)
+        handleUpdateEvent(currentEvent.id, currentEvent)
+        setOpenModal(false)
     }
 
-    function handleUpdateEvent(title, updatedEvent) {
+    function handleUpdateEvent(id, updatedEvent) {
         const updatedItem = allEvents.map((event) => {
-            return event.title === title ? updatedEvent : event
+            return event.id === id ? updatedEvent : event
         })
         setAllEvents(updatedItem)
-    }*/
+    }
 
     function handleAddEvent(e){
         e.preventDefault()
@@ -78,7 +78,9 @@ function Body() {
         if (newEvent !== "") {
             setAllEvents([
                 ...allEvents,
-                newEvent
+                {...newEvent,
+                    id: new Date()
+                }
             ])
         }
         
@@ -127,8 +129,9 @@ function Body() {
             {openModal && 
                 <EditModal 
                     closeModal={setOpenModal}
-                    /*onEditInputChange={handleEditInputChange}
-                    onEditFormSubmit={handleEditFormSubmit} *//>}
+                    onEditInputChange={handleEditInputChange}
+                    onEditFormSubmit={handleEditFormSubmit}
+                    currentEvent={currentEvent} />}
             <div className="calendar">
                 <Calendar
                     selectable
@@ -137,7 +140,7 @@ function Body() {
                     startAccessor="start"
                     endAccessor="end"
                     popup="true"
-                    onSelectEvent={() => setOpenModal(true)}
+                    onSelectEvent={handleClickEvent}
                     style={{ 
                         height: 500, 
                         margin:"50px", 

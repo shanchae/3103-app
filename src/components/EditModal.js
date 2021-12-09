@@ -1,4 +1,4 @@
-function EditModal({closeModal, /*currentEvent, onEditInputChange, onEditFormSubmit*/}) {
+function EditModal({closeModal, currentEvent, onEditInputChange, onEditFormSubmit}) {
     return (
         <div className="modal-bg">
             <div className="modal-container">
@@ -13,12 +13,12 @@ function EditModal({closeModal, /*currentEvent, onEditInputChange, onEditFormSub
                 <div className="modal-body">
                     <input 
                         type="text"
-                        /*value={currentEvent.title}
-                        onChange={onEditInputChange}*/
+                        value={currentEvent.title}
+                        onChange={onEditInputChange}
                     />
                     <span 
                         className="icon"
-                        /*onClick={onEditFormSubmit}*/
+                        onClick={onEditFormSubmit}
                     >
                         ✔
                     </span>
