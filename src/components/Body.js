@@ -1,32 +1,10 @@
 /* eslint-disable eqeqeq */
 import { useEffect, useState } from "react"
-import format from "date-fns/format"
-import parse from 'date-fns/parse'
-import startOfWeek from 'date-fns/startOfWeek'
-import getDay from 'date-fns/getDay'
-import { dateFnsLocalizer, Views } from "react-big-calendar"
 import DateTimePicker from "react-datetime-picker/dist/DateTimePicker"
 import 'react-datetime-picker/dist/DateTimePicker.css'
-import 'react-calendar/dist/Calendar.css'
-import 'react-clock/dist/Clock.css'
-import { Calendar } from "react-big-calendar"
-import 'react-big-calendar/lib/css/react-big-calendar.css'
 import events from "../data/events"
 import EditModal from "./EditModal"
-
-let allViews = Object.keys(Views).map(k => Views[k])
-
-const locales ={
-    "en-US" : require("date-fns/locale/en-US")
-}
-
-const localizer = dateFnsLocalizer({
-    format,
-    parse,
-    startOfWeek,
-    getDay,
-    locales
-})
+import CalendarComponent from "./CalendarComponent"
 
 
 function Body() {
@@ -49,20 +27,9 @@ function Body() {
         localStorage.setItem("events", JSON.stringify(allEvents))
     }, [allEvents])
 
-    
-    function handleEditInputChange(e) {
-        setCurrentEvent({...currentEvent, title: e.target.value})
-    }
-
     function handleClickEvent(newEvent){
         setOpenModal(true)
         setCurrentEvent({...newEvent})
-    }
-
-    function handleEditFormSubmit(e) {
-        e.preventDefault()
-        handleUpdateEvent(currentEvent.id, currentEvent)
-        setOpenModal(false)
     }
 
     function handleUpdateEvent(id, updatedEvent) {
@@ -129,25 +96,14 @@ function Body() {
             {openModal && 
                 <EditModal 
                     closeModal={setOpenModal}
-                    onEditInputChange={handleEditInputChange}
-                    onEditFormSubmit={handleEditFormSubmit}
-                    currentEvent={currentEvent} />}
+                    onUpdateEvent={handleUpdateEvent}
+                    currentEvent={currentEvent} 
+                />
+            }
             <div className="calendar">
-                <Calendar
-                    selectable
-                    views={allViews}
-                    localizer={localizer}
+                <CalendarComponent
                     events={allEvents}
-                    startAccessor="start"
-                    endAccessor="end"
-                    popup={true}
-                    onSelectEvent={handleClickEvent}
-                    style={{ 
-                        height: 500, 
-                        margin:"50px", 
-                        background: "white", 
-                        color: "black",
-                        border: "2px solid black" }}
+                    onClickEvent={handleClickEvent}
                 />
             </div>
         </div>

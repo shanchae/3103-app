@@ -1,6 +1,16 @@
 import DateTimePicker from "react-datetime-picker/dist/DateTimePicker"
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { useState } from "react"
 
-function EditModal({closeModal, currentEvent, onEditInputChange, onEditFormSubmit}) {
+function EditModal({closeModal, currentEvent, onUpdateEvent}) {
+    const [event, setEvent] = useState(currentEvent)
+
+    function handleEditFormSubmit(e) {
+        e.preventDefault()
+        onUpdateEvent(event.id, event)
+        closeModal(false)
+    }
+
     
 
     return (
@@ -17,26 +27,40 @@ function EditModal({closeModal, currentEvent, onEditInputChange, onEditFormSubmi
                 <div className="modal-body">
                     <input 
                         type="text"
-                        value={currentEvent.title}
-                        onChange={onEditInputChange}
+                        value={event.title}
+                        onChange={(e) => setEvent({...event, title: e.target.value})}
                     />
                     <p>
                         {currentEvent.start}
                     </p>
                     <DateTimePicker
-                    disableClock={true}
-                    disableCalendar={true}
-                    selected={currentEvent.start}
-                    dayPlaceholder="dd"
-                    monthPlaceholder="mm"
-                    yearPlaceholder="yyyy"
-                    hourPlaceholder="hh"
-                    minutePlaceholder="mm"
-                    onChange={onEditInputChange}
-                />
+                        disableClock={true}
+                        disableCalendar={true}
+                        selected={event.start}
+                        dayPlaceholder="dd"
+                        monthPlaceholder="mm"
+                        yearPlaceholder="yyyy"
+                        hourPlaceholder="hh"
+                        minutePlaceholder="mm"
+                        onChange={(start) => setEvent({...event, start: new Date(start)})}
+                    />
+                    <p>
+                        {currentEvent.end}
+                    </p>
+                    <DateTimePicker
+                        disableClock={true}
+                        disableCalendar={true}
+                        selected={event.end}
+                        dayPlaceholder="dd"
+                        monthPlaceholder="mm"
+                        yearPlaceholder="yyyy"
+                        hourPlaceholder="hh"
+                        minutePlaceholder="mm"
+                        onChange={(end) => setEvent({...event, end: new Date(end)})}
+                    />
                     <span 
                         className="icon"
-                        onClick={onEditFormSubmit}
+                        onClick={handleEditFormSubmit}
                     >
                         ✔
                     </span>
