@@ -4,6 +4,8 @@ import { useState } from "react"
 
 function EditModal({closeModal, currentEvent, onUpdateEvent}) {
     const [event, setEvent] = useState(currentEvent)
+    const start = new Date(currentEvent.start)
+    const end = new Date(currentEvent.end)
 
     function handleEditFormSubmit(e) {
         e.preventDefault()
@@ -31,7 +33,7 @@ function EditModal({closeModal, currentEvent, onUpdateEvent}) {
                         onChange={(e) => setEvent({...event, title: e.target.value})}
                     />
                     <p>
-                        {currentEvent.start}
+                        Starts: {start.toDateString()} - {start.toLocaleTimeString()}
                     </p>
                     <DateTimePicker
                         disableClock={true}
@@ -45,7 +47,7 @@ function EditModal({closeModal, currentEvent, onUpdateEvent}) {
                         onChange={(start) => setEvent({...event, start: new Date(start)})}
                     />
                     <p>
-                        {currentEvent.end}
+                        Ends: {end.toDateString()} - {end.toLocaleTimeString()}
                     </p>
                     <DateTimePicker
                         disableClock={true}
