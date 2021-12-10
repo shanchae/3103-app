@@ -4,7 +4,7 @@ import format from "date-fns/format"
 import parse from 'date-fns/parse'
 import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
-import { dateFnsLocalizer } from "react-big-calendar"
+import { dateFnsLocalizer, Views } from "react-big-calendar"
 import DateTimePicker from "react-datetime-picker/dist/DateTimePicker"
 import 'react-datetime-picker/dist/DateTimePicker.css'
 import 'react-calendar/dist/Calendar.css'
@@ -14,6 +14,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import events from "../data/events"
 import EditModal from "./EditModal"
 
+let allViews = Object.keys(Views).map(k => Views[k])
 
 const locales ={
     "en-US" : require("date-fns/locale/en-US")
@@ -29,8 +30,7 @@ const localizer = dateFnsLocalizer({
 
 
 function Body() {
-    const [ newEvent, setNewEvent ] = useState({ id: "", title: "", start: "", end: ""})
-    /*const [ allEvents, setAllEvents ] = useState(events)*/
+    const [ newEvent, setNewEvent ] = useState({})
     const [openModal, setOpenModal] = useState(false)
     const [currentEvent, setCurrentEvent] = useState({})
 
@@ -75,7 +75,7 @@ function Body() {
     function handleAddEvent(e){
         e.preventDefault()
         
-        if (newEvent !== "") {
+        if (newEvent !== {}) {
             setAllEvents([
                 ...allEvents,
                 {...newEvent,
@@ -85,7 +85,7 @@ function Body() {
         }
         
         console.log(newEvent)
-        setNewEvent({ title: "", start: "", end: "" })
+        setNewEvent({})
     }  
 
 
@@ -107,7 +107,7 @@ function Body() {
                     yearPlaceholder="yyyy"
                     hourPlaceholder="hh"
                     minutePlaceholder="mm"
-                    onChange={(start) => setNewEvent({...newEvent, start})}
+                    onChange={(start) => setNewEvent({...newEvent, start : new Date(start)})}
                 />
                 <DateTimePicker
                     disableClock={true}
@@ -121,7 +121,7 @@ function Body() {
                     yearPlaceholder="yyyy"
                     hourPlaceholder="hh"
                     minutePlaceholder="mm"
-                    onChange={(end) => setNewEvent({...newEvent, end})}
+                    onChange={(end) => setNewEvent({...newEvent, end : new Date(end)})}
                 />
                 <button className="button" onClick={handleAddEvent}>Add</button>
             </div>
@@ -135,11 +135,12 @@ function Body() {
             <div className="calendar">
                 <Calendar
                     selectable
+                    views={allViews}
                     localizer={localizer}
                     events={allEvents}
                     startAccessor="start"
                     endAccessor="end"
-                    popup="true"
+                    popup={true}
                     onSelectEvent={handleClickEvent}
                     style={{ 
                         height: 500, 

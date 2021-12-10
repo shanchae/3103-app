@@ -88,7 +88,7 @@ input {
 
 .modal-container{
   width: 350px;
-  height: 300px;
+  height: 400px;
   border-radius: 12px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -102,7 +102,7 @@ input {
 }
 
 .modal-container .modal-header{
-  margin-top: -77px;
+  margin-top: -60px;
   background-color: rgb(96, 104, 79);
   color: white;
 }
@@ -134,4 +134,10 @@ input {
   height: 1.6em;
   border-radius: .5em;
   font-size: 24px;
+}
+
+.modal-body{
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }

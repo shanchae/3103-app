@@ -1,4 +1,8 @@
+import DateTimePicker from "react-datetime-picker/dist/DateTimePicker"
+
 function EditModal({closeModal, currentEvent, onEditInputChange, onEditFormSubmit}) {
+    
+
     return (
         <div className="modal-bg">
             <div className="modal-container">
@@ -16,6 +20,20 @@ function EditModal({closeModal, currentEvent, onEditInputChange, onEditFormSubmi
                         value={currentEvent.title}
                         onChange={onEditInputChange}
                     />
+                    <p>
+                        {currentEvent.start}
+                    </p>
+                    <DateTimePicker
+                    disableClock={true}
+                    disableCalendar={true}
+                    selected={currentEvent.start}
+                    dayPlaceholder="dd"
+                    monthPlaceholder="mm"
+                    yearPlaceholder="yyyy"
+                    hourPlaceholder="hh"
+                    minutePlaceholder="mm"
+                    onChange={onEditInputChange}
+                />
                     <span 
                         className="icon"
                         onClick={onEditFormSubmit}
